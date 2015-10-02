@@ -1,0 +1,9 @@
+{
+  "name": "racetrack",
+  "version": "0.0.1",
+  "description": "Racetrack Mega Boogie",
+  "dependencies": {
+    "mime": "~1.2.7",
+    "socket.io": "1.3.5"
+  }
+}

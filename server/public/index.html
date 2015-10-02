@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Racetrack</title>
+        <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+		<script src="scripts/socket.io.js"></script>
+		<script src="scripts/snap.svg.js"></script>
+		<script src="scripts/phaser.js"></script>
+		<script src="scripts/uploader.js" defer></script>
+		<script src="scripts/main.js"></script>
+		<script src="scripts/game.js"></script>
+		<script src="scripts/track.js"></script>
+		<script src="scripts/car.js"></script>
+    </head>
+    <body>
+	
+	
+        <div id="header">
+            <span>This is a racetrack generator</span>
+            <ul id="menu">
+                <li>GENERATE</li>
+                <li>RACETRACK</li>
+            </ul>
+        </div>
+        <div id="content">
+            <h2>Generate Racetrack</h2>
+            <h3>upload Racetracks</h3>
+			<input type="file" id="file" name="files[]" accept="image/*" multiple />
+			<button onclick="sendFile()">upload</button>
+			<button onclick="speed()">speed</button>
+			<h3>Test Racetracks</h3>
+			<button onclick="generate1()">generate1</button>
+			<button onclick="generate2()">generate2</button>
+        </div>
+		
+    </body>
+	
+</html>
