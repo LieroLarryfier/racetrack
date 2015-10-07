@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" 
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd"
+>
+ <svg version="1.1" baseProfile="tiny" 
+ xmlns="http://www.w3.org/2000/svg" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+ width="35" height="26" viewBox="0 0 35 26" >
+ <title>car</title> <desc>car for racetrack</desc>
+
+<defs>
+<g id="auswahl" stroke="black">
+<g id="auswahlReifen" fill="black" stroke="none" >
+<rect x="0" y="4" width="6" height="6"/>
+<rect x="10" y="4" width="6" height="6"/>
+<rect x="9" y="14" width="6" height="6"/>
+<rect x="1" y="14" width="6" height="6"/>
+</g>
+<path id="auswahlBody" d="M4,5 L4,14 7,21 2,21 2,25 14,25 14,21 9,21 12,14 12,5 Z" />
+<rect id="auswahlSpoiler" x="1" y="0" rx="1" ry="1" width="14" height="5" />
+</g>
+</defs>
+
+<use xlink:href="#auswahl" x="0" y="0" fill="rgb(179,255,0)"/>
+<use xlink:href="#auswahl" x="17" y="0"  fill="rgb(255,0,166)"/>
+</svg>

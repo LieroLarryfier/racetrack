@@ -2,8 +2,13 @@ var polygon;
 
 function startGame() {
 console.log(parseInt(STAGE_WIDTH) + " x " + parseInt(STAGE_HEIGHT));
-var game = new Phaser.Game(STAGE_WIDTH, STAGE_HEIGHT, Phaser.CANVAS, 'phaser-example', { create: create, update: update, render: render });
+var game = new Phaser.Game(STAGE_WIDTH, STAGE_HEIGHT, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
+function preload() {
+
+    game.load.spritesheet('car', 'assets/car.svg', 17, 26 ,2);
+	
+}
 
 var graphics;
 var car1;
@@ -22,13 +27,8 @@ function create() {
 	car1 = new Phaser.Rectangle(polygon.points[0].x, polygon.points[0].y-20, 10, 20);
 	car2 = new Phaser.Rectangle(polygon.points[0].x+20, polygon.points[0].y-20, 10, 20); 
 
-	vettelSprite = game.add.sprite(car1.x, car1.y, car1);
-	kimiSprite = game.add.sprite(car2.x, car2.y, car2);
-	
-	graphics.beginFill(0xFFFFFF)
-	graphics.drawRect(car1.x, car1.y, car1.width, car1.height);
-	graphics.drawRect(car2.x, car2.y, car2.width, car2.height);
-	graphics.endFill();
+	vettelSprite = game.add.sprite(car1.x, car1.y, 'car', 0);
+	kimiSprite = game.add.sprite(car2.x, car2.y, 'car', 1);
 	
 	game.physics.p2.enable(vettelSprite);
 	game.physics.p2.enable(kimiSprite);
@@ -72,11 +72,11 @@ function update() {
 
     if (cursors.up.isDown)
     {
-       vettelSprite.body.moveForward(20);
+       vettelSprite.body.moveForward(100);
     }
     else if (cursors.down.isDown)
     {
-        vettelSprite.body.moveBackward(20);
+        vettelSprite.body.moveBackward(50);
     }
 	
 	if (cursorsLeft.left.isDown)
@@ -95,11 +95,11 @@ function update() {
 
     if (cursorsLeft.up.isDown)
     {
-        kimiSprite.body.moveForward(20);
+        kimiSprite.body.moveForward(100);
     }
     else if (cursorsLeft.down.isDown)
     {
-        kimiSprite.body.moveBackward(20);
+        kimiSprite.body.moveBackward(100);
     }
 	
 }
