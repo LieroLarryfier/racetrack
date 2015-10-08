@@ -7,10 +7,12 @@ var game = new Phaser.Game(STAGE_WIDTH, STAGE_HEIGHT, Phaser.CANVAS, 'phaser-exa
 function preload() {
 
     game.load.spritesheet('car', 'assets/car.svg', 17, 26 ,2);
+	game.load.image('track', 'assets/d1.jpg');
 	
 }
 
 var graphics;
+var track;
 var car1;
 var car2;
 var cursors;
@@ -21,37 +23,59 @@ function create() {
 
     graphics = game.add.graphics(0, 0);
 
-    graphics.beginFill(0xFF00A6);
-    graphics.drawPolygon(polygon.points);
+	//track
+	
+    //graphics.beginFill(0xFF00A6);
+    //graphics.drawPolygon(polygon.points);
    
-	car1 = new Phaser.Rectangle(polygon.points[0].x, polygon.points[0].y-20, 10, 20);
-	car2 = new Phaser.Rectangle(polygon.points[0].x+20, polygon.points[0].y-20, 10, 20); 
+	trackSprite = game.add.sprite(0,0, 'track');
+	game.physics.p2.enable(trackSprite, true);
+	
+	
+	trackSprite.body.clearShapes();
+	trackSprite.body.addPolygon({}, polygon);
+	trackSprite.body.static = true;
+	
+	for (shapeNr in trackSprite.body.data.shapes) {
+			var shape = trackSprite.body.data.shapes[shapeNr];
+			shape.sensor = true;
+			console.log(shape);
+	}
+	trackSprite.body.onBeginContact.add(onTrack, this);
+	trackSprite.body.onEndContact.add(outTrack, this);
+	//TODO: make track as sensor
+	
+	//this.body.onBeginContact.add(this.overlap, this);
+	
+	//cars
+	car1 = new Phaser.Rectangle(polygon[0], polygon[1]-20, 10, 20);
+	car2 = new Phaser.Rectangle(polygon[0]+20, polygon[1]-20, 10, 20); 
 
 	vettelSprite = game.add.sprite(car1.x, car1.y, 'car', 0);
 	kimiSprite = game.add.sprite(car2.x, car2.y, 'car', 1);
 	
-	game.physics.p2.enable(vettelSprite);
-	game.physics.p2.enable(kimiSprite);
+	game.physics.p2.enable(vettelSprite, true);
+	game.physics.p2.enable(kimiSprite, true);
 	
+	//inputs
 	cursors = game.input.keyboard.createCursorKeys();
 	cursorsLeft = game.input.keyboard.addKeys( { 'up': Phaser.Keyboard.W, 'down': Phaser.Keyboard.S, 'left': Phaser.Keyboard.A, 'right': Phaser.Keyboard.D } );
 }
 
+var speed = 100;
+
+function onTrack() {
+	speed = 200;
+	console.log("in");
+}
+
+
+function outTrack() {
+	speed = 100;
+	console.log("out");
+}
+
 function update() {
-
-    graphics.clear();
-
-	//track
-    if (polygon.contains(game.input.x, game.input.y))
-    {
-        graphics.beginFill(0xB3FF00);
-    }
-    else
-    {
-        graphics.beginFill(0xFF00A6);
-    }
-
-    graphics.drawPolygon(polygon.points);
 	
 	//cars
 	
@@ -72,7 +96,7 @@ function update() {
 
     if (cursors.up.isDown)
     {
-       vettelSprite.body.moveForward(100);
+       vettelSprite.body.moveForward(speed);
     }
     else if (cursors.down.isDown)
     {
@@ -95,7 +119,7 @@ function update() {
 
     if (cursorsLeft.up.isDown)
     {
-        kimiSprite.body.moveForward(100);
+        kimiSprite.body.moveForward(speed);
     }
     else if (cursorsLeft.down.isDown)
     {

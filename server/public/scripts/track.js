@@ -24,11 +24,17 @@ var longestSubPath = function (path) {
 				}
 			}
 		}
-		var points = [];
+		var pointsArray = [];
 		for (point in returnPathArray) {
-			points.push(new Phaser.Point(returnPathArray[point][1],returnPathArray[point][2]));
+			var x = returnPathArray[point][1];
+			var y = returnPathArray[point][2];
+			if (x > 0 && y > 0) {
+				
+				pointsArray.push(x);
+				pointsArray.push(y);
+			}
 		}
-		polygon = new Phaser.Polygon(points);
+		polygon = pointsArray;
 		
 		console.log(returnPathArray);
 		console.log(polygon);
