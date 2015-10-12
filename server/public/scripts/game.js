@@ -11,6 +11,9 @@ function preload() {
 	
 }
 
+var CAR_WIDTH = 10;
+var CAR_HEIGHT = 20;
+
 var graphics;
 var track;
 var car1;
@@ -39,17 +42,14 @@ function create() {
 	for (shapeNr in trackSprite.body.data.shapes) {
 			var shape = trackSprite.body.data.shapes[shapeNr];
 			shape.sensor = true;
-			console.log(shape);
+			//console.log(shape);
 	}
 	trackSprite.body.onBeginContact.add(onTrack, this);
 	trackSprite.body.onEndContact.add(outTrack, this);
-	//TODO: make track as sensor
-	
-	//this.body.onBeginContact.add(this.overlap, this);
 	
 	//cars
-	car1 = new Phaser.Rectangle(polygon[0], polygon[1]-20, 10, 20);
-	car2 = new Phaser.Rectangle(polygon[0]+20, polygon[1]-20, 10, 20); 
+	car1 = new Phaser.Rectangle(polygon[0], polygon[1]-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
+	car2 = new Phaser.Rectangle(polygon[0]+2*CAR_WIDTH, polygon[1]-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT); 
 
 	vettelSprite = game.add.sprite(car1.x, car1.y, 'car', 0);
 	kimiSprite = game.add.sprite(car2.x, car2.y, 'car', 1);
