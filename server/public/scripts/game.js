@@ -13,6 +13,10 @@ function preload() {
 
 var CAR_WIDTH = 10;
 var CAR_HEIGHT = 20;
+var SPEED_STANDARD = 200;
+var SPEED_SLOW = 100;
+var SPEED_BACKWARDS = 50;
+var CLUTCH = 33;
 
 var graphics;
 var track;
@@ -44,8 +48,11 @@ function create() {
 			shape.sensor = true;
 			//console.log(shape);
 	}
-	trackSprite.body.onBeginContact.add(onTrack, this);
-	trackSprite.body.onEndContact.add(outTrack, this);
+	
+	
+	
+	//trackSprite.body.onBeginContact.add(onTrack, this);
+	//trackSprite.body.onEndContact.add(outTrack, this);
 	
 	//cars
 	car1 = new Phaser.Rectangle(polygon[0], polygon[1]-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
@@ -57,6 +64,8 @@ function create() {
 	game.physics.p2.enable(vettelSprite, true);
 	game.physics.p2.enable(kimiSprite, true);
 	
+	kimiSprite.body.createBodyCallback(vettelSprite, onTrack, this);
+	
 	//inputs
 	cursors = game.input.keyboard.createCursorKeys();
 	cursorsLeft = game.input.keyboard.addKeys( { 'up': Phaser.Keyboard.W, 'down': Phaser.Keyboard.S, 'left': Phaser.Keyboard.A, 'right': Phaser.Keyboard.D } );
@@ -65,13 +74,13 @@ function create() {
 var speed = 100;
 
 function onTrack() {
-	speed = 200;
+	speed = SPEED_STANDARD;
 	console.log("in");
 }
 
 
 function outTrack() {
-	speed = 100;
+	speed = SPEED_SLOW;
 	console.log("out");
 }
 
@@ -81,11 +90,11 @@ function update() {
 	
 	if (cursors.left.isDown)
     {
-        vettelSprite.body.rotateLeft(20);
+        vettelSprite.body.rotateLeft(CLUTCH);
     }
     else if (cursors.right.isDown)
     {
-        vettelSprite.body.rotateRight(20);
+        vettelSprite.body.rotateRight(CLUTCH);
     } 
 	else 
 	{
@@ -96,20 +105,20 @@ function update() {
 
     if (cursors.up.isDown)
     {
-       vettelSprite.body.moveForward(speed);
+       vettelSprite.body.thrust(speed);
     }
     else if (cursors.down.isDown)
     {
-        vettelSprite.body.moveBackward(50);
+        vettelSprite.body.moveBackward(SPEED_BACKWARDS);
     }
 	
 	if (cursorsLeft.left.isDown)
     {
-        kimiSprite.body.rotateLeft(20);
+        kimiSprite.body.rotateLeft(CLUTCH);
     }
     else if (cursorsLeft.right.isDown)
     {
-        kimiSprite.body.rotateRight(20);
+        kimiSprite.body.rotateRight(CLUTCH);
     }
 	else 
 	{
@@ -119,11 +128,11 @@ function update() {
 
     if (cursorsLeft.up.isDown)
     {
-        kimiSprite.body.moveForward(speed);
+        kimiSprite.body.thrust(speed);
     }
     else if (cursorsLeft.down.isDown)
     {
-        kimiSprite.body.moveBackward(100);
+        kimiSprite.body.moveBackward(SPEED_BACKWARDS);
     }
 	
 }
