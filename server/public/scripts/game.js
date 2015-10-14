@@ -17,6 +17,8 @@ var SPEED_STANDARD = 200;
 var SPEED_SLOW = 100;
 var SPEED_BACKWARDS = 50;
 var CLUTCH = 33;
+var DAMPING_STANDARD = 0.5;
+var DAMPING_OUT = 0.9;
 
 var graphics;
 var track;
@@ -40,7 +42,41 @@ function create() {
 	
 	
 	trackSprite.body.clearShapes();
-	trackSprite.body.addPolygon({}, polygon);
+	//trackSprite.body.addPolygon({}, polygon);
+	
+	//TODO: draw track with rectangles and check for overlaps
+	
+	for (pointNr in polygon) {
+		var a = 0;
+		var b = 0;
+		
+		if (pointNr == polygon.length - 1) {
+			console.log("last");
+			a = pointNr;
+			b = 0;
+		} else {
+			console.log("normal");
+			a = pointNr;
+			b = parseInt(pointNr) + 1;
+		}
+		console.log("a: " + a + " b: " + b);
+		var rectWidth = polygon[b].x - polygon[a].x;
+		var rectHeight = polygon[b].y - polygon[a].y;
+		
+		//TODO: logic for straights
+		if (rectWidth <= 0) {
+			rectWidth+=120;
+		}
+		
+		if (rectHeight <= 0) {
+			rectHeight+=120;
+		}
+		
+		console.log("x: " + polygon[a].x + " y: " + polygon[a].y + " width: " + rectWidth + " height: " + rectHeight);
+		
+		trackSprite.body.addRectangle(rectWidth, rectHeight, polygon[a].x, polygon[a].y, 0); 
+	}
+	
 	trackSprite.body.static = true;
 	
 	for (shapeNr in trackSprite.body.data.shapes) {
@@ -50,21 +86,18 @@ function create() {
 	}
 	
 	
-	
 	//trackSprite.body.onBeginContact.add(onTrack, this);
 	//trackSprite.body.onEndContact.add(outTrack, this);
 	
 	//cars
-	car1 = new Phaser.Rectangle(polygon[0], polygon[1]-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
-	car2 = new Phaser.Rectangle(polygon[0]+2*CAR_WIDTH, polygon[1]-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT); 
+	car1 = new Phaser.Rectangle(polygon[0].x, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
+	car2 = new Phaser.Rectangle(polygon[0].x+2*CAR_WIDTH, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT); 
 
 	vettelSprite = game.add.sprite(car1.x, car1.y, 'car', 0);
 	kimiSprite = game.add.sprite(car2.x, car2.y, 'car', 1);
 	
 	game.physics.p2.enable(vettelSprite, true);
 	game.physics.p2.enable(kimiSprite, true);
-	
-	kimiSprite.body.createBodyCallback(vettelSprite, onTrack, this);
 	
 	//inputs
 	cursors = game.input.keyboard.createCursorKeys();
@@ -74,14 +107,18 @@ function create() {
 var speed = 100;
 
 function onTrack() {
-	speed = SPEED_STANDARD;
-	console.log("in");
+	//speed = SPEED_STANDARD;
+	console.log(_carBody);
+	_carBody.body.damping = DAMPING_STANDARD;
+	
 }
 
 
-function outTrack() {
-	speed = SPEED_SLOW;
-	console.log("out");
+function outTrack(_carBody, _shapeA, _shapeB, _equation) {
+	//speed = SPEED_SLOW;
+	console.log("out: " + _carBody);
+	_carBody.body.damping = DAMPING_OUT;
+	
 }
 
 function update() {

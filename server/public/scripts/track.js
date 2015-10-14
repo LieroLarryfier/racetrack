@@ -30,8 +30,7 @@ var longestSubPath = function (path) {
 			var y = returnPathArray[point][2];
 			if (x > 0 && y > 0) {
 				
-				pointsArray.push(x);
-				pointsArray.push(y);
+				pointsArray[point] = {x, y};
 			}
 		}
 		polygon = pointsArray;
