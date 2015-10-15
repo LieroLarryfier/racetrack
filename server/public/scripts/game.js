@@ -44,38 +44,11 @@ function create() {
 	trackSprite.body.clearShapes();
 	//trackSprite.body.addPolygon({}, polygon);
 	
-	//TODO: draw track with rectangles and check for overlaps
+	//TODO: arcade physics  and check for overlaps in group
 	
-	for (pointNr in polygon) {
-		var a = 0;
-		var b = 0;
-		
-		if (pointNr == polygon.length - 1) {
-			console.log("last");
-			a = pointNr;
-			b = 0;
-		} else {
-			console.log("normal");
-			a = pointNr;
-			b = parseInt(pointNr) + 1;
-		}
-		console.log("a: " + a + " b: " + b);
-		var rectWidth = polygon[b].x - polygon[a].x;
-		var rectHeight = polygon[b].y - polygon[a].y;
-		
-		//TODO: logic for straights
-		if (rectWidth <= 0) {
-			rectWidth+=120;
-		}
-		
-		if (rectHeight <= 0) {
-			rectHeight+=120;
-		}
-		
-		console.log("x: " + polygon[a].x + " y: " + polygon[a].y + " width: " + rectWidth + " height: " + rectHeight);
-		
-		trackSprite.body.addRectangle(rectWidth, rectHeight, polygon[a].x, polygon[a].y, 0); 
-	}
+	drawTrackWithRectangles(trackSprite);
+	
+	
 	
 	trackSprite.body.static = true;
 	
@@ -86,8 +59,8 @@ function create() {
 	}
 	
 	
-	//trackSprite.body.onBeginContact.add(onTrack, this);
-	//trackSprite.body.onEndContact.add(outTrack, this);
+	trackSprite.body.onBeginContact.add(onTrack, this);
+	trackSprite.body.onEndContact.add(outTrack, this);
 	
 	//cars
 	car1 = new Phaser.Rectangle(polygon[0].x, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
@@ -104,20 +77,69 @@ function create() {
 	cursorsLeft = game.input.keyboard.addKeys( { 'up': Phaser.Keyboard.W, 'down': Phaser.Keyboard.S, 'left': Phaser.Keyboard.A, 'right': Phaser.Keyboard.D } );
 }
 
+function drawTrackWithRectangles(trackSprite) {
+	for (pointNr in polygon) {
+		var a = 0;
+		var b = 0;
+		
+		if (pointNr == polygon.length - 1) {
+			//console.log("last");
+			a = pointNr;
+			b = 0;
+		} else {
+			//console.log("normal");
+			a = pointNr;
+			b = parseInt(pointNr) + 1;
+		}
+		//console.log("a: " + a + " b: " + b);
+		
+		var quadrant = 0;
+		
+		if (polygon[a].x > polygon[b].x) {
+			quadrant |= 1;
+			console.log("right");
+		} 
+		
+		if (polygon[a].y > polygon[b].y) {
+			quadrant |= 2;
+			console.log("bottom");
+		} 
+		
+		console.log(quadrant);
+		
+		var rectWidth = Math.abs(polygon[b].x - polygon[a].x);
+		var rectHeight = Math.abs(polygon[b].y - polygon[a].y);
+		
+		//TODO: logic for straights
+		if (rectWidth < 10) {
+			rectWidth+=10;
+		}
+		
+		if (rectHeight < 10) {
+			rectHeight+=10;
+		}
+		
+		console.log("x: " + polygon[a].x + " y: " + polygon[a].y + " width: " + rectWidth + " height: " + rectHeight);
+		
+		trackSprite.body.addRectangle(rectWidth, rectHeight, polygon[a].x, polygon[a].y, 0); 
+	}
+}
+
+
 var speed = 100;
 
 function onTrack() {
 	//speed = SPEED_STANDARD;
-	console.log(_carBody);
-	_carBody.body.damping = DAMPING_STANDARD;
+	//console.log(_carBody);
+	vettelSprite.body.damping = DAMPING_STANDARD;
 	
 }
 
 
-function outTrack(_carBody, _shapeA, _shapeB, _equation) {
+function outTrack() {
 	//speed = SPEED_SLOW;
-	console.log("out: " + _carBody);
-	_carBody.body.damping = DAMPING_OUT;
+	//console.log("out: " + _carBody);
+	vettelSprite.body.damping = DAMPING_OUT;
 	
 }
 
