@@ -13,8 +13,8 @@ function preload() {
 
 var CAR_WIDTH = 10;
 var CAR_HEIGHT = 20;
-var SPEED_STANDARD = 200;
-var SPEED_SLOW = 100;
+var SPEED_STANDARD = 30;
+var SPEED_SLOW = 10;
 var SPEED_BACKWARDS = 50;
 var CLUTCH = 33;
 var DAMPING_STANDARD = 0.5;
@@ -28,6 +28,7 @@ var cursors;
 //TODO: add racecars, only outline from polygon,
 function create() {
 
+	game.physics.startSystem(Phaser.Physics.ARCADE);
 	game.physics.startSystem(Phaser.Physics.P2JS);
 
     graphics = game.add.graphics(0, 0);
@@ -38,39 +39,43 @@ function create() {
     //graphics.drawPolygon(polygon.points);
    
 	trackSprite = game.add.sprite(0,0, 'track');
-	game.physics.p2.enable(trackSprite, true);
+	game.physics.arcade.enable(trackSprite, true);
 	
 	
-	trackSprite.body.clearShapes();
+	//trackSprite.body.clearShapes();
 	//trackSprite.body.addPolygon({}, polygon);
 	
 	//TODO: arcade physics  and check for overlaps in group
 	
-	drawTrackWithRectangles(trackSprite);
+	track = game.add.group();
+    track.enableBody = true;
+    track.physicsBodyType = Phaser.Physics.ARCADE;
+
+    
 	
+	drawTrackWithRectangles(track);
 	
+	//trackSprite.body.static = true;
 	
-	trackSprite.body.static = true;
-	
-	for (shapeNr in trackSprite.body.data.shapes) {
-			var shape = trackSprite.body.data.shapes[shapeNr];
-			shape.sensor = true;
+	//for (shapeNr in trackSprite.body.data.shapes) {
+	//		var shape = trackSprite.body.data.shapes[shapeNr];
+	//		shape.sensor = true;
 			//console.log(shape);
-	}
+	//}
 	
-	
-	trackSprite.body.onBeginContact.add(onTrack, this);
-	trackSprite.body.onEndContact.add(outTrack, this);
+	//trackSprite.body.onBeginContact.add(onTrack, this);
+	//trackSprite.body.onEndContact.add(outTrack, this);
 	
 	//cars
 	car1 = new Phaser.Rectangle(polygon[0].x, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
 	car2 = new Phaser.Rectangle(polygon[0].x+2*CAR_WIDTH, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT); 
 
 	vettelSprite = game.add.sprite(car1.x, car1.y, 'car', 0);
+	vettelSprite.anchor.setTo(0.5, 0.5);
 	kimiSprite = game.add.sprite(car2.x, car2.y, 'car', 1);
 	
-	game.physics.p2.enable(vettelSprite, true);
-	game.physics.p2.enable(kimiSprite, true);
+	game.physics.arcade.enable(vettelSprite, true);
+	game.physics.arcade.enable(kimiSprite, true);
 	
 	//inputs
 	cursors = game.input.keyboard.createCursorKeys();
@@ -120,13 +125,26 @@ function drawTrackWithRectangles(trackSprite) {
 		}
 		
 		console.log("x: " + polygon[a].x + " y: " + polygon[a].y + " width: " + rectWidth + " height: " + rectHeight);
+
+		var drawnObject;
+
+var bmd = game.add.bitmapData(rectWidth, rectHeight);
+ 
+bmd.ctx.beginPath();
+bmd.ctx.rect(0, 0, rectWidth, rectHeight);
+bmd.ctx.fillStyle = '#ffffff';
+bmd.ctx.fill();
+drawnObject = game.add.sprite(polygon[a].x, polygon[a].y, bmd);
 		
-		trackSprite.body.addRectangle(rectWidth, rectHeight, polygon[a].x, polygon[a].y, 0); 
+        var c = track.create(polygon[a].x, polygon[a].y, bmd);
+        c.name = 'rect' + pointNr;
+        c.body.immovable = true;
+		 
 	}
 }
 
 
-var speed = 100;
+var speed = SPEED_SLOW;
 
 function onTrack() {
 	//speed = SPEED_STANDARD;
@@ -144,56 +162,65 @@ function outTrack() {
 }
 
 function update() {
+	speed = SPEED_SLOW;
+	vettelSprite.body.angularVelocity = 0;
+	game.physics.arcade.overlap(vettelSprite, track, collisionHandler, null, this);
 	
 	//cars
-	
+	//TODO: angular damping
 	if (cursors.left.isDown)
     {
-        vettelSprite.body.rotateLeft(CLUTCH);
+        vettelSprite.body.angularVelocity = -CLUTCH;
     }
     else if (cursors.right.isDown)
     {
-        vettelSprite.body.rotateRight(CLUTCH);
+        vettelSprite.body.angularVelocity = CLUTCH;
     } 
 	else 
 	{
-		vettelSprite.body.rotateLeft(0);
-		vettelSprite.body.rotateRight(0);
+		//vettelSprite.body.rotateLeft(0);
+		//vettelSprite.body.rotateRight(0);
 	}
 		
 
     if (cursors.up.isDown)
     {
-       vettelSprite.body.thrust(speed);
+       game.physics.arcade.velocityFromAngle(vettelSprite.angle, speed, vettelSprite.body.velocity);
     }
     else if (cursors.down.isDown)
     {
-        vettelSprite.body.moveBackward(SPEED_BACKWARDS);
+		game.physics.arcade.velocityFromAngle(vettelSprite.angle, -SPEED_BACKWARDS, vettelSprite.body.velocity);
     }
 	
 	if (cursorsLeft.left.isDown)
     {
-        kimiSprite.body.rotateLeft(CLUTCH);
+        //kimiSprite.body.rotateLeft(CLUTCH);
     }
     else if (cursorsLeft.right.isDown)
     {
-        kimiSprite.body.rotateRight(CLUTCH);
+        //kimiSprite.body.rotateRight(CLUTCH);
     }
 	else 
 	{
-		kimiSprite.body.rotateLeft(0);
-		kimiSprite.body.rotateRight(0);
+		//kimiSprite.body.rotateLeft(0);
+		//kimiSprite.body.rotateRight(0);
 	}
 
     if (cursorsLeft.up.isDown)
     {
-        kimiSprite.body.thrust(speed);
+        //kimiSprite.body.thrust(speed);
     }
     else if (cursorsLeft.down.isDown)
     {
-        kimiSprite.body.moveBackward(SPEED_BACKWARDS);
+        //kimiSprite.body.moveBackward(SPEED_BACKWARDS);
     }
 	
+}
+
+function collisionHandler (vettel, track) {
+	//console.log("vettelTrack");
+    speed = SPEED_STANDARD;
+    
 }
 
 function render() {
