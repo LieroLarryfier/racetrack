@@ -33,6 +33,7 @@ var longestSubPath = function (path) {
 				pointsArray[point] = {x, y};
 			}
 		}
+		
 		polygon = pointsArray;
 		
 		console.log(returnPathArray);
