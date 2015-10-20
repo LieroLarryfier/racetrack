@@ -43,6 +43,22 @@ var longestSubPath = function (path) {
 
 var STAGE_HEIGHT;
 var STAGE_WIDTH;
+var iteration = 0;
+
+var trackPngData;
+
+function trackAsPng() {
+				var svg = document.getElementById("svg" + iteration);
+				var img = document.getElementById("exportPng");
+				svg.toDataURL("image/png", {
+					callback: function(data) {
+						trackPngData = data;
+						img.setAttribute("src", data)
+						console.log(data);
+					}
+				})
+				iteration++;
+			}
 
 //TODO: display polygon
 var displayTrack = function (data) {
@@ -56,7 +72,7 @@ var displayTrack = function (data) {
 		
 		var trackPath = longestSubPath(p);
 		
-		startGame();
+		
 		
 		p.attr({
 			transform : "translate(0.000000, 0.00000) scale(1.00000,1.00000)",
@@ -115,6 +131,17 @@ var displayTrack = function (data) {
 		//animateAlongPath(line, car1, 0, 20000);
 		addAnimateMotion(s, car1);
 		addAnimateMotion(s, car2);
+		
+		var svgId = "svg" + iteration;
+			s.attr({
+				id : svgId
+			});
+		
+		
+		
+		startGame();
+		
+		
 	});
 	
 	//s.circle(150,150,100);

@@ -6,8 +6,11 @@ var game = new Phaser.Game(STAGE_WIDTH, STAGE_HEIGHT, Phaser.CANVAS, 'phaser-exa
 
 function preload() {
 
+	trackAsPng();
+
     game.load.spritesheet('car', 'assets/car.svg', 17, 26 ,2);
-	game.load.image('track', 'assets/d1.jpg');
+	console.log(trackPngData);
+	game.load.image('track', trackPngData);
 	
 }
 
@@ -77,12 +80,10 @@ function drawTrackWithRectangles(trackSprite) {
 		
 		if (polygon[a].x > polygon[b].x) {
 			quadrant |= 1;
-			console.log("right");
 		} 
 		
 		if (polygon[a].y > polygon[b].y) {
 			quadrant |= 2;
-			console.log("bottom");
 		} 
 		
 		var rectWidth = Math.abs(polygon[b].x - polygon[a].x);
