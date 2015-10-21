@@ -53,8 +53,9 @@ function trackAsPng() {
 				svg.toDataURL("image/png", {
 					callback: function(data) {
 						trackPngData = data;
-						img.setAttribute("src", data)
-						console.log(data);
+						//img.setAttribute("src", data)
+						//console.log(data);
+						startGame();
 					}
 				})
 				iteration++;
@@ -138,8 +139,8 @@ var displayTrack = function (data) {
 			});
 		
 		
+		trackAsPng();
 		
-		startGame();
 		
 		
 	});

@@ -6,8 +6,6 @@ var game = new Phaser.Game(STAGE_WIDTH, STAGE_HEIGHT, Phaser.CANVAS, 'phaser-exa
 
 function preload() {
 
-	trackAsPng();
-
     game.load.spritesheet('car', 'assets/car.svg', 17, 26 ,2);
 	console.log(trackPngData);
 	game.load.image('track', trackPngData);
@@ -37,15 +35,19 @@ function create() {
     graphics = game.add.graphics(0, 0);
 
 	//track
+	
 	//TODO: track png from svg as picture
-	trackSprite = game.add.sprite(0,0, 'track');
-	game.physics.arcade.enable(trackSprite, true);
 	
 	track = game.add.group();
     track.enableBody = true;
     track.physicsBodyType = Phaser.Physics.ARCADE;
 
 	drawTrackWithRectangles(track);
+	
+	trackSprite = game.add.sprite(0,0, 'track');
+	game.physics.arcade.enable(trackSprite, true);
+	
+	
 		
 	//cars
 	car1 = new Phaser.Rectangle(polygon[0].x, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
