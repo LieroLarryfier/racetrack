@@ -6,7 +6,7 @@ var game = new Phaser.Game(STAGE_WIDTH, STAGE_HEIGHT, Phaser.CANVAS, 'phaser-exa
 
 function preload() {
 
-    game.load.spritesheet('car', 'assets/car.svg', 17, 26 ,2);
+    game.load.spritesheet('car', 'assets/car.svg', 26, 17 ,2);
 	console.log(trackPngData);
 	game.load.image('track', trackPngData);
 	
@@ -46,19 +46,21 @@ function create() {
 	
 	trackSprite = game.add.sprite(0,0, 'track');
 	game.physics.arcade.enable(trackSprite, true);
-	
-	
 		
 	//cars
 	car1 = new Phaser.Rectangle(polygon[0].x, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
 	car2 = new Phaser.Rectangle(polygon[0].x+2*CAR_WIDTH, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT); 
 
 	vettelSprite = game.add.sprite(car1.x, car1.y, 'car', 0);
-	vettelSprite.anchor.setTo(0.5, 0.5);
-	kimiSprite = game.add.sprite(car2.x, car2.y, 'car', 1);
-	
 	game.physics.arcade.enable(vettelSprite, true);
+	vettelSprite.body.setSize(26,26,0,0);
+	vettelSprite.anchor.setTo(0.5, 0.5);
+	
+	kimiSprite = game.add.sprite(car2.x, car2.y, 'car', 1);
 	game.physics.arcade.enable(kimiSprite, true);
+	kimiSprite.body.setSize(26,26,0,0);
+	kimiSprite.anchor.setTo(0.5, 0.5);
+	
 	
 	//inputs
 	vettelCursors = game.input.keyboard.createCursorKeys();
@@ -183,7 +185,8 @@ function kimiOnTrack(kimi, track) {
 function render() {
 
     game.debug.text(game.input.x + ' x ' + game.input.y, 32, 32);
-
+	game.debug.body(vettelSprite);
+	game.debug.body(kimiSprite);
 }
 
 }

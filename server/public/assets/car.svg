@@ -5,11 +5,11 @@
  <svg version="1.1" baseProfile="tiny" 
  xmlns="http://www.w3.org/2000/svg" 
 xmlns:xlink="http://www.w3.org/1999/xlink" 
- width="35" height="26" viewBox="0 0 35 26" >
+ width="54" height="17" viewBox="0 0 54 17" >
  <title>car</title> <desc>car for racetrack</desc>
 
 <defs>
-<g id="auswahl" stroke="black" transform="rotate(180), translate(-17,-26)">
+<g id="auswahl" stroke="black" transform="rotate(270), translate(-17,0)">
 <g id="auswahlReifen" fill="black" stroke="none" >
 <rect x="0" y="4" width="6" height="6"/>
 <rect x="10" y="4" width="6" height="6"/>
@@ -22,5 +22,5 @@ xmlns:xlink="http://www.w3.org/1999/xlink"
 </defs>
 
 <use xlink:href="#auswahl" x="0" y="0" fill="rgb(179,255,0)"/>
-<use xlink:href="#auswahl" x="17" y="0"  fill="rgb(255,0,166)"/>
+<use xlink:href="#auswahl" x="27" y="0"  fill="rgb(255,0,166)"/>
 </svg>
