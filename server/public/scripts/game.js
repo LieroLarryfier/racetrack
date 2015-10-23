@@ -12,12 +12,12 @@ function preload() {
 	
 }
 
-var CAR_WIDTH = 10;
-var CAR_HEIGHT = 20;
-var SPEED_STANDARD = 30;
-var SPEED_SLOW = 10;
-var SPEED_BACKWARDS = 50;
-var CLUTCH = 33;
+var CAR_WIDTH = 25;
+var CAR_HEIGHT = 25;
+var SPEED_STANDARD = 72;
+var SPEED_SLOW = 42;
+var SPEED_BACKWARDS = 42;
+var CLUTCH = 72;
 var DAMPING_STANDARD = 0.5;
 var DAMPING_OUT = 0.9;
 
@@ -142,7 +142,9 @@ function update() {
     else if (vettelCursors.right.isDown)
     {
         vettelSprite.body.angularVelocity = CLUTCH;
-    } 
+    } else {
+		vettelSprite.body.angularVelocity = 0;
+	}
 	
     if (vettelCursors.up.isDown)
     {
@@ -151,7 +153,7 @@ function update() {
     else if (vettelCursors.down.isDown)
     {
 		game.physics.arcade.velocityFromAngle(vettelSprite.angle, -SPEED_BACKWARDS, vettelSprite.body.velocity);
-    }
+    } 
 	
 	//kimi
 	if (kimiCursors.left.isDown)
@@ -161,7 +163,7 @@ function update() {
     else if (kimiCursors.right.isDown)
     {
         kimiSprite.body.angularVelocity = CLUTCH;
-    }
+    } 
 	
     if (kimiCursors.up.isDown)
     {
@@ -170,7 +172,7 @@ function update() {
     else if (kimiCursors.down.isDown)
     {
         game.physics.arcade.velocityFromAngle(kimiSprite.angle, -SPEED_BACKWARDS, kimiSprite.body.velocity);
-    }
+    } 
 	
 }
 
