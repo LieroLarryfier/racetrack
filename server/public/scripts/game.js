@@ -26,7 +26,7 @@ var track;
 var car1;
 var car2;
 var cursors;
-//TODO: add racecars, only outline from polygon,
+
 function create() {
 
 	game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -35,9 +35,7 @@ function create() {
     graphics = game.add.graphics(0, 0);
 
 	//track
-	
-	//TODO: track png from svg as picture
-	
+		
 	track = game.add.group();
     track.enableBody = true;
     track.physicsBodyType = Phaser.Physics.ARCADE;
@@ -48,8 +46,8 @@ function create() {
 	game.physics.arcade.enable(trackSprite, true);
 		
 	//cars
-	car1 = new Phaser.Rectangle(polygon[0].x, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
-	car2 = new Phaser.Rectangle(polygon[0].x+2*CAR_WIDTH, polygon[0].y-CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT); 
+	car1 = new Phaser.Rectangle(polygon[0].x, polygon[0].y-0.6*CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT);
+	car2 = new Phaser.Rectangle(polygon[0].x, polygon[0].y+0.6*CAR_HEIGHT, CAR_WIDTH, CAR_HEIGHT); 
 
 	vettelSprite = game.add.sprite(car1.x, car1.y, 'car', 0);
 	game.physics.arcade.enable(vettelSprite, true);
