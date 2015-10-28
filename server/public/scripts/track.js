@@ -1,4 +1,5 @@
-//TODO: get LONGEST path
+//TODO: improve path recognition, render trees, render sand incurves, render curbs only in curves,
+//render stands, render start and finish line, render start grid, render different grass, (render ismoetric view)
 var longestSubPath = function (path) {
 		var pathArray = Snap.parsePathString(path);
 		var subPathArray = [];
@@ -14,7 +15,6 @@ var longestSubPath = function (path) {
 				
 				var subPath = subPathArray.toString().replace(/,/g," ");
 				var pathLength = Snap.path.getTotalLength(subPath);
-				console.log(pathLength);
 				if (longestPath < pathLength) {
 					longestPath = pathLength;
 					returnPath = Snap.path.toAbsolute(subPath);
@@ -35,9 +35,7 @@ var longestSubPath = function (path) {
 		}
 		
 		polygon = pointsArray;
-		
-		console.log(returnPathArray);
-		console.log(polygon);
+
 		return returnPath;
 }
 
@@ -53,15 +51,12 @@ function trackAsPng() {
 				svg.toDataURL("image/png", {
 					callback: function(data) {
 						trackPngData = data;
-						//img.setAttribute("src", data)
-						//console.log(data);
 						startGame();
 					}
 				})
 				iteration++;
 			}
 
-//TODO: display polygon
 var displayTrack = function (data) {
 	
 	Snap.load(data.svg, function (f) {
@@ -129,7 +124,6 @@ var displayTrack = function (data) {
 			fill : "#b3ff00"
 		});
 		
-		//animateAlongPath(line, car1, 0, 20000);
 		addAnimateMotion(s, car1);
 		addAnimateMotion(s, car2);
 		
@@ -144,7 +138,5 @@ var displayTrack = function (data) {
 		
 		
 	});
-	
-	//s.circle(150,150,100);
-	console.log(data);
+
 };	

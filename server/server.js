@@ -63,7 +63,7 @@ var generateRaceTrack = function(file, socket) {
 	 
 	 var bmp = filename + ".bmp";
 	 var svg = filename + ".svg";
-	
+	//TODO: improve potrace algorithm (suppress speckles, adjust -k dynamically)
 	var child = execSync('potrace -s -u 1 -a 0 -k 0.42 ' + filePath + imagePath + bmp,
 		function (error, stdout, stderr) {
 			console.log('stdout: ' + stdout);

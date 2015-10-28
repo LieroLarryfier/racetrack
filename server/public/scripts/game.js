@@ -1,3 +1,5 @@
+//TODO: collision between cars, deceleration when not forward, acceleration when forward, drifting,
+
 var polygon;
 
 function startGame() {
@@ -7,7 +9,6 @@ var game = new Phaser.Game(STAGE_WIDTH, STAGE_HEIGHT, Phaser.CANVAS, 'phaser-exa
 function preload() {
 
     game.load.spritesheet('car', 'assets/car.svg', 26, 17 ,2);
-	console.log(trackPngData);
 	game.load.image('track', trackPngData);
 	
 }
@@ -100,8 +101,6 @@ function drawTrackWithRectangles(trackSprite) {
 			rectHeight+=10;
 		}
 		
-		//console.log("x: " + polygon[a].x + " y: " + polygon[a].y + " width: " + rectWidth + " height: " + rectHeight);
-
 		var drawnObject;
 
 		var bmd = game.add.bitmapData(rectWidth, rectHeight);
@@ -119,10 +118,8 @@ function drawTrackWithRectangles(trackSprite) {
 	}
 }
 
-
 var vettelSpeed = SPEED_SLOW;
 var kimiSpeed = SPEED_SLOW;
-
 
 function update() {
 	vettelSpeed = SPEED_SLOW;
@@ -170,8 +167,7 @@ function update() {
     else if (kimiCursors.down.isDown)
     {
         game.physics.arcade.velocityFromAngle(kimiSprite.angle, -SPEED_BACKWARDS, kimiSprite.body.velocity);
-    } 
-	
+    } 	
 }
 
 function vettelOnTrack(vettel, track) {
@@ -187,6 +183,7 @@ function render() {
     game.debug.text(game.input.x + ' x ' + game.input.y, 32, 32);
 	game.debug.body(vettelSprite);
 	game.debug.body(kimiSprite);
+	game.debug.body(track);
 }
 
 }
